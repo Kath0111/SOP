@@ -1,17 +1,17 @@
 use image::ImageReader;
-use crate::Data::data::MyKeys;
+use crate::Data::data::{PrivateKeys,PublicKeys};
 
 use crate::logik::func::modularinverse;
 
-pub fn imageencrypt(image: &str, keys: &MyKeys) {
+pub fn imageencrypt(image: &str, keys: &PublicKeys) {
 
     let mut img = ImageReader::open(image).expect("Failed to open image").decode().expect("Failed to decode image").to_rgba16();
 
     for pixel in img.pixels_mut(){
         pixel.0 = [
-                    encrypt_pix(pixel[0] as u8, keys.m(), keys.k),
-                    encrypt_pix(pixel[1] as u8, keys.m(), keys.k),
-                    encrypt_pix(pixel[2] as u8, keys.m(), keys.k),
+                    encrypt_pix(pixel[0] as u8, keys.m, keys.k),
+                    encrypt_pix(pixel[1] as u8, keys.m, keys.k),
+                    encrypt_pix(pixel[2] as u8, keys.m, keys.k),
                     pixel[3]
                     ];
     }
@@ -20,9 +20,9 @@ pub fn imageencrypt(image: &str, keys: &MyKeys) {
 
 }
 
-pub fn imagedecrypt(image: &str, keys: &MyKeys){
+pub fn imagedecrypt(image: &str, prikeys: &PrivateKeys, pukeys: &PublicKeys){
 
-    let ss = modularinverse(keys.k, keys.øm()) as u128;
+    let ss = modularinverse(pukeys.k, prikeys.øm()) as u128;
 
     let encrypted_img = ImageReader::open(image).expect("Failed to open image").decode().expect("Failed to decode image").to_rgba16();
     
@@ -30,9 +30,9 @@ pub fn imagedecrypt(image: &str, keys: &MyKeys){
     let mut decrypted_img = image::RgbaImage::new(width, height);
 
     for (x, y, pixel) in encrypted_img.enumerate_pixels() {
-        let r = decrypt_pix(pixel[0], keys.m() as u128, ss);
-        let g = decrypt_pix(pixel[1], keys.m() as u128, ss);
-        let b = decrypt_pix(pixel[2], keys.m() as u128, ss);
+        let r = decrypt_pix(pixel[0], pukeys.m as u128, ss);
+        let g = decrypt_pix(pixel[1], pukeys.m as u128, ss);
+        let b = decrypt_pix(pixel[2], pukeys.m as u128, ss);
         let a = (pixel[3] % 256) as u8;
         decrypted_img.put_pixel(x, y, image::Rgba([r, g, b, a]));
     }

@@ -1,6 +1,6 @@
-use crate::Data::data::MyKeys;
+use crate::Data::data::{PrivateKeys,PublicKeys};
 
-pub fn encrypt(word: String, keys: &MyKeys) -> Vec<i128> {
+pub fn encrypt(word: String, keys: &PublicKeys) -> Vec<i128> {
 
     let mut wordspilt: Vec<i128> = Vec::new();
 
@@ -12,7 +12,7 @@ pub fn encrypt(word: String, keys: &MyKeys) -> Vec<i128> {
     let mut cryptword: Vec<i128> = Vec::new();
 
     for n in wordspilt {
-        let c = power(n, keys.k, keys.m());
+        let c = power(n, keys.k, keys.m);
         cryptword.push(c);
     }
 
@@ -20,14 +20,14 @@ pub fn encrypt(word: String, keys: &MyKeys) -> Vec<i128> {
     
 }
 
-pub fn decrypt(cryptword: Vec<i128>, keys: &MyKeys) -> Vec<i128> {
+pub fn decrypt(cryptword: Vec<i128>, prikeys: &PrivateKeys, pubkeys: &PublicKeys) -> Vec<i128> {
    
-    let ss = modularinverse(keys.k, keys.øm());
+    let ss = modularinverse(pubkeys.k, prikeys.øm());
 
     let mut decryptlist: Vec<i128> = Vec::new();
 
     for i in cryptword {
-        let decrypt = power(i,ss,keys.m());
+        let decrypt = power(i,ss,pubkeys.m);
         decryptlist.push(decrypt);
     }
 

@@ -1,12 +1,14 @@
 use std::io;
-use crate::Data::data::MyKeys;
+use crate::Data::data::{PrivateKeys,PublicKeys};
 
 mod logik;
 mod Data;
 
 fn main() {
 
-    let keys = MyKeys { p: 331, q: 149, k: 17 };
+    let prikeys = PrivateKeys::new(331, 149);
+    let pukeys = PublicKeys {k: 17, m: prikeys.m()};
+
 
     // kryptering af ord / sætninger / bare tegn der er unicode format
 
@@ -19,11 +21,11 @@ fn main() {
     let word = word.trim();
     // let word = "hemmelighed".to_lowercase();
 
-    let list = logik::func::encrypt(word.to_string(), &keys);
+    let list = logik::func::encrypt(word.to_string(), &pukeys);
 
     println!("encrypted: {:?}",list);
 
-    let list2 = logik::func::decrypt(list, &keys);
+    let list2 = logik::func::decrypt(list, &prikeys, &pukeys);
 
     println!("decrypted: {:?}",list2);
 
@@ -33,9 +35,9 @@ fn main() {
 
     // kryptering over billede pixels 
 
-    // logik::image_func::imageencrypt("Wicket.png", &keys);
+    logik::image_func::imageencrypt("Wicket.png", &pukeys);
 
-    // logik::image_func::imagedecrypt("RSAwicket2.png", &keys);
+    logik::image_func::imagedecrypt("RSAwicket2.png", &prikeys, &pukeys);
 
 }
 
