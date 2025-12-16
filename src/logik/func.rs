@@ -66,7 +66,7 @@ fn sfd(k: i128, øm: i128) -> (i128,i128,i128){
     }
 }
 
-fn modularinverse(k: i128, øm: i128) -> i128 {
+pub fn modularinverse(k: i128, øm: i128) -> i128 {
     let (d, s, _) = sfd(k, øm);
     if d != 1 {
         panic!("sfd({},{}) er ikke lig 1", øm, k);
