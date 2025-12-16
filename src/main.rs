@@ -8,28 +8,34 @@ fn main() {
 
     let keys = MyKeys { p: 331, q: 149, k: 17 };
 
-    // let mut word = String::new();
+    // kryptering af ord / sætninger / bare tegn der er unicode format
 
-    // println!("Skriv noget der skal krypteres: ");
+    let mut word = String::new();
 
-    // io::stdin().read_line(&mut word).expect("Input forkert");
+    println!("Skriv noget der skal krypteres: ");
 
-    // let word = word.trim();
-    // // let word = "hemmelighed".to_lowercase();
+    io::stdin().read_line(&mut word).expect("Input forkert");
 
-    // let list = logik::func::encrypt(word.to_string(), &keys);
+    let word = word.trim();
+    // let word = "hemmelighed".to_lowercase();
 
-    // println!("encrypted: {:?}",list);
+    let list = logik::func::encrypt(word.to_string(), &keys);
 
-    // let list2 = logik::func::decrypt(list, &keys);
+    println!("encrypted: {:?}",list);
 
-    // println!("decrypted: {:?}",list2);
+    let list2 = logik::func::decrypt(list, &keys);
 
-    // let decrypt = logik::func::decryptword(list2);
+    println!("decrypted: {:?}",list2);
 
-    // println!("Dekrypteret ord: {}", decrypt);
+    let decrypt = logik::func::decryptword(list2);
 
-    logik::image_func::imageencrypt("Wicket.png", &keys);
+    println!("Dekrypteret ord: {}", decrypt);
+
+    // kryptering over billede pixels 
+
+    // logik::image_func::imageencrypt("Wicket.png", &keys);
+
+    // logik::image_func::imagedecrypt("RSAwicket2.png", &keys);
 
 }
 

@@ -18,9 +18,13 @@ pub fn imageencrypt(image: &str, keys: &MyKeys) {
 
     img.save("RSAwicket2.png").expect("Failed to save image");
 
+}
+
+pub fn imagedecrypt(image: &str, keys: &MyKeys){
+
     let ss = modularinverse(keys.k, keys.øm()) as u128;
 
-    let encrypted_img = ImageReader::open("RSAwicket2.png").expect("Failed to open image").decode().expect("Failed to decode image").to_rgba16();
+    let encrypted_img = ImageReader::open(image).expect("Failed to open image").decode().expect("Failed to decode image").to_rgba16();
     
     let (width, height) = encrypted_img.dimensions();
     let mut decrypted_img = image::RgbaImage::new(width, height);
@@ -38,26 +42,13 @@ pub fn imageencrypt(image: &str, keys: &MyKeys) {
 
 fn decrypt_pix(pixel: u16, m: u128, ss: u128) -> u8 {
     let c = mod_pow(pixel as u128, ss, m);
-    // let c = encrypt(pixel as u128, m , ss);
     (c % 256) as u8
-    // let new = (c % 256).min(256)as u8;
-    // new 
-}
 
-fn encrypt(pixel: u128, m: u128, k: u128) -> u128{
-    let mut c = pixel;
-    for _i in 1..k {
-        c = (pixel * c) % m;
-    }
-    c 
 }
 
 fn encrypt_pix(pixel: u8, m: i128, k: i128) -> u16{
     let c = mod_pow(pixel as u128, k as u128, m as u128);
     c as u16
-    // let c = encrypt(pixel as u128, m as u128, k as u128);
-    // let new =(c % 256).min(256)as u8;
-    // new 
 }
 
 fn mod_pow(pixel: u128, exp: u128, mod_: u128) -> u128 {
