@@ -1,38 +1,53 @@
+use crate::Data::data::MyKeys;
 
-pub fn mm(words: Vec<i128>)  {
+pub fn encrypt(word: String, keys: &MyKeys) -> Vec<i128> {
 
-    let p = 331;
-    let q = 149;
-    let m: i128 = p * q;
-    let øm: i128 = (p -1) * (q - 1);
-    let k: i128 = 17;
+    let mut wordspilt: Vec<i128> = Vec::new();
 
-    println!("sfd = {:?}",sfd(k, øm));
-    println!("modinv = {:?}",modularinverse(k, øm));
-    let ss = modularinverse(k, øm);
+    for w in word.chars() {
+        let s = w as u32 as i128;
+        wordspilt.push(s);
+    }
 
     let mut cryptword: Vec<i128> = Vec::new();
 
-    for n in words {
-        let c = power(n, k, m);
+    for n in wordspilt {
+        let c = power(n, keys.k, keys.m());
         cryptword.push(c);
     }
 
+    cryptword
+    
+}
+
+pub fn decrypt(cryptword: Vec<i128>, keys: &MyKeys) -> Vec<i128> {
+   
+    let ss = modularinverse(keys.k, keys.øm());
+
     let mut decryptlist: Vec<i128> = Vec::new();
 
-    println!("cryptwords {:?}", cryptword);
-
     for i in cryptword {
-        let decrypt = power(i,ss,m);
+        let decrypt = power(i,ss,keys.m());
         decryptlist.push(decrypt);
     }
 
-    println!("this is decrypted {:?}", decryptlist);
+    decryptlist
 
-} 
+}
 
-fn power(n: i128, k: i128, m: i128) -> i128{
-    
+pub fn decryptword(decryptlist: Vec<i128>) -> String{
+    let mut decrypted = String::new();
+
+    for n in decryptlist {
+        let c = n as u32;
+        let s = std::char::from_u32(c).unwrap();
+        decrypted += &s.to_string();
+    }
+
+    decrypted
+}
+
+fn power(n: i128, k: i128, m: i128) -> i128{ // funktion der udføre opløftning
     let mut c = n;
         for _i in 1..k {
             c = ((n % m) * (c % m)) % m;
@@ -46,15 +61,15 @@ fn sfd(k: i128, øm: i128) -> (i128,i128,i128){
         (øm,0,1)
     }
     else {
-        let (d, s1, t1) = sfd(øm%k , k);
+        let (d, s1, t1) = sfd(øm%k , k); // rekursivt kald -- udføre euklids algoritme
         (d, t1 - (øm/k) * s1, s1)
     }
 }
 
 fn modularinverse(k: i128, øm: i128) -> i128 {
-    let (g, x, _) = sfd(k, øm);
-    if g != 1 {
-        panic!("Ingen modular inverse");
+    let (d, s, _) = sfd(k, øm);
+    if d != 1 {
+        panic!("sfd({},{}) er ikke lig 1", øm, k);
     }
-    (x % øm + øm) % øm
+    (s % øm + øm) % øm // hvis s er negativ ændres til positiv 
 }

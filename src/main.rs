@@ -1,9 +1,13 @@
 use std::io;
+use crate::Data::data::MyKeys;
 
 
 mod logik;
+mod Data;
 
 fn main() {
+
+    let keys = MyKeys { p: 331, q: 149, k: 17 };
 
     let mut word = String::new();
 
@@ -13,20 +17,18 @@ fn main() {
 
     let word = word.trim();
     // let word = "hemmelighed".to_lowercase();
-    // let word = "hej".to_lowercase();
 
-    let mut finallist: Vec<i128> = Vec::new();
+    let list = logik::func::encrypt(word.to_string(), &keys);
 
-    println!("The word: {}", word);
+    println!("encrypted: {:?}",list);
 
-    for w in word.chars() {
-        let s = w as u32 as i128;
-        finallist.push(s);
-    }
+    let list2 = logik::func::decrypt(list, &keys);
 
-    println!("{:?}",finallist);
+    println!("decrypted: {:?}",list2);
 
-    logik::func::mm(finallist);
+    let decrypt = logik::func::decryptword(list2);
+
+    println!("Dekrypteret ord: {}", decrypt);
 
 }
 
