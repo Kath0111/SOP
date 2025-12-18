@@ -36,7 +36,7 @@ pub fn imagedecrypt(image: &str, prikeys: &PrivateKeys, pukeys: &PublicKeys){
         let a = (pixel[3] % 256) as u8;
         decrypted_img.put_pixel(x, y, image::Rgba([r, g, b, a]));
     }
-    decrypted_img.save("DECRYPTEDwicket.png").expect("Failed to save image");
+    decrypted_img.save("testd.png").expect("Failed to save image");
 
 }
 

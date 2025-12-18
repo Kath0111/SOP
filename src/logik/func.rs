@@ -30,7 +30,6 @@ pub fn decrypt(cryptword: Vec<i128>, prikeys: &PrivateKeys, pubkeys: &PublicKeys
         let decrypt = power(i,ss,pubkeys.m);
         decryptlist.push(decrypt);
     }
-
     decryptlist
 
 }
@@ -47,7 +46,7 @@ pub fn decryptword(decryptlist: Vec<i128>) -> String{
     decrypted
 }
 
-fn power(n: i128, k: i128, m: i128) -> i128{ // funktion der udføre opløftning
+fn power(n: i128, k: i128, m: i128) -> i128{ // funktion der udføre opløftning og kryptering/dekrypterings formelen
     let mut c = n;
         for _i in 1..k {
             c = ((n % m) * (c % m)) % m;

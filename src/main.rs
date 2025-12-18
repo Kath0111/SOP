@@ -7,8 +7,8 @@ mod Data;
 fn main() {
 
     let prikeys = PrivateKeys::new(331, 149);
-    let pukeys = PublicKeys {k: 17, m: prikeys.m()};
 
+    let pukeys = PublicKeys {k: 17, m: prikeys.m()};
 
     // kryptering af ord / sætninger / bare tegn der er unicode format
 
@@ -35,9 +35,9 @@ fn main() {
 
     // kryptering over billede pixels 
 
-    logik::image_func::imageencrypt("Wicket.png", &pukeys);
+    logik::image_func::imageencrypt("wicket.png", &pukeys);
 
-    logik::image_func::imagedecrypt("RSAwicket2.png", &prikeys, &pukeys);
+    logik::image_func::imagedecrypt("Test.png", &prikeys, &pukeys);
 
 }
 

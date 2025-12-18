@@ -11,11 +11,11 @@ fn main() {
     println!("{}",word3);
     println!();
 
-    // let wordbrute = word2;
-    // for i in 0..26 {
-    //     let w = decrypt(&wordbrute, i, &alphabet);
-    //     println!("{}", w);
-    // }
+    let wordbrute = word2;
+    for i in 0..26 {
+        let w = decrypt(&wordbrute, i, &alphabet);
+        println!("{}", w);
+    }
 
     let mut img = ImageReader::open("Wicket.png").expect("Failed to open image").decode().expect("Failed to decode image").to_rgba8();
     // println!("Dimensions: {:?}", img.dimensions());
